@@ -1,52 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
+import Hero from "./pages/Hero";
+import Products from "./pages/Products";
+import SingleProduct from "./pages/SingleProduct";
 function App() {
-  const getProducts = localStorage.getItem("cart")
-    ? JSON.parse(localStorage.getItem("cart"))
-    : [];
-  const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState(getProducts);
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      const res = await fetch("https://fakestoreapi.com/products");
-      const data = await res.json();
-      setProducts(data);
-      setLoading(false);
-    };
-    loadData();
-  }, []);
-
-  const handleAddToCart = (id) => {
-    const findProduct = products.find((pd) => pd.id === id);
-    if (findProduct) {
-      setCart([...cart, findProduct]);
-    }
-  };
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              loading={loading}
-              products={products}
-              handleAddToCart={handleAddToCart}
-            />
-          }
-        />
-        <Route path="/cart" element={<Cart />} />
-      </Routes>
-    </Router>
-  );
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+      children: [
+        { path: "/", element: <Hero /> },
+        {
+          path: "products",
+          element: <Products />,
+          loader: async () => fetch("https://fakestoreapi.com/products"),
+        },
+        { path: "cart", element: <Cart /> },
+        {
+          path: "product/:id",
+          element: <SingleProduct />,
+          loader: async ({ params }) =>
+            fetch(`https://fakestoreapi.com/products/${params.id}`),
+        },
+      ],
+    },
+  ]);
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

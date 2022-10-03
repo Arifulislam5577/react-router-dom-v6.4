@@ -1,31 +1,41 @@
 import React from "react";
-import { BsCart4 } from "react-icons/bs";
 import { Link } from "react-router-dom";
-const Navbar = () => {
-  return (
-    <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 sticky-top">
-      <div className="container d-flex align-items-center justify-content=between">
-        <Link
-          className="navbar-brand text-warning text-uppercase fw-bold"
-          to="/"
-        >
-          ema-john
-        </Link>
 
-        <Link to="/cart" className="nav-link  d-flex">
-          <span>
-            <BsCart4 color="white" />
-          </span>
-          <span
-            className="bg-warning d-block d-flex align-items-center justify-content-center rounded-circle text-dark"
-            style={{ height: "20px", width: "20px", fontSize: "12px" }}
-          >
-            12
-          </span>
+function Header() {
+  return (
+    <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
+      <div className="container">
+        <Link className="navbar-brand" to="/">
+          R.R.V.6.4
         </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <Link className="nav-link" to="/products">
+                Products
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/cart">
+                Cart
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );
-};
+}
 
-export default Navbar;
+export default Header;
